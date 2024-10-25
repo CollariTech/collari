@@ -10,7 +10,11 @@ tokio = { workspace = true }
 serde = { workspace = true }
 log = { workspace = true }
 
-axum = { version = "0.7.7", default-features = false, features = ["http2", "tokio"] }
+axum = { version = "0.7.7", default-features = false, features = ["http2", "tokio", "json", "query"] }
+tower-sessions = { version = "0.13.0", default-features = false, features = ["memory-store"] }
+oauth2 = { version = "5.0.0-rc.1", default-features = false, features = ["reqwest"] }
+axum-extra = { version = "0.9.4", features = ["json-deserializer"] }
 tower-http = { version = "0.6.1", default-features = false, features = ["cors"] }
 garde = { version = "0.20.0", default-features = false, features = ["derive"] }
+reqwest = { version = "0.12.8", default-features = false, features = ["json"] }
 axum_garde = { version = "0.20.0", default-features = false }

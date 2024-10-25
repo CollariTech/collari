@@ -1,5 +1,8 @@
+pub mod oauth;
+
 use axum::http::{header, Method};
-use axum::Router;
+use axum::{Extension, Router};
+use crate::app::oauth::OAuthProvider;
 
 pub struct Server;
 
@@ -12,6 +15,7 @@ impl Server {
         Router::new()
             .nest("/api", crate::api::router())
             .layer(configure_cors())
+            .layer(Extension(OAuthProvider::new()))
     }
 
     pub async fn run(self) {

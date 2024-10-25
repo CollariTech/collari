@@ -1,5 +1,6 @@
 mod app;
 mod api;
+mod json;
 
 #[tokio::main]
 pub async fn main() {
