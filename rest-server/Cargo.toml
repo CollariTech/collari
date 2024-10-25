@@ -1,0 +1,16 @@
+[package]
+name = "rest-server"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+env_logger = { workspace = true }
+dotenv = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+log = { workspace = true }
+
+axum = { version = "0.7.7", default-features = false, features = ["http2", "tokio"] }
+tower-http = { version = "0.6.1", default-features = false, features = ["cors"] }
+garde = { version = "0.20.0", default-features = false, features = ["derive"] }
+axum_garde = { version = "0.20.0", default-features = false }
