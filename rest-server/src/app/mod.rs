@@ -1,21 +1,43 @@
 pub mod oauth;
 
+use crate::app::oauth::OAuthProvider;
 use axum::http::{header, Method};
 use axum::{Extension, Router};
-use crate::app::oauth::OAuthProvider;
+use gatekeeper::client::GatekeeperClient;
+use std::sync::Arc;
+use tokio::sync::Mutex;
+use tower_sessions::cookie::SameSite;
+use tower_sessions::{MemoryStore, SessionManagerLayer};
 
-pub struct Server;
+#[derive(Clone)]
+pub struct AppState {
+    pub client: Arc<Mutex<GatekeeperClient>>,
+}
+
+pub struct Server {
+    state: AppState,
+}
 
 impl Server {
     pub fn new() -> Self {
-        Self
+        let client = Arc::new(Mutex::new(
+            GatekeeperClient::new("http://[::1]:10000".to_string())
+        ));
+
+        Self {
+            state: AppState {
+                client
+            }
+        }
     }
 
-    pub fn router() -> Router {
+    pub fn router(state: AppState) -> Router {
         Router::new()
             .nest("/api", crate::api::router())
             .layer(configure_cors())
             .layer(Extension(OAuthProvider::new()))
+            .layer(configure_session())
+            .layer(Extension(state))
     }
 
     pub async fn run(self) {
@@ -26,7 +48,7 @@ impl Server {
         ))
             .await
             .unwrap();
-        axum::serve(listener, Self::router())
+        axum::serve(listener, Self::router(self.state))
             .await
             .expect("Failed to start axum server");
     }
@@ -43,4 +65,13 @@ fn configure_cors() -> tower_http::cors::CorsLayer {
             Method::GET, Method::PUT,
             Method::DELETE, Method::PATCH
         ])
+}
+
+fn configure_session() -> SessionManagerLayer<MemoryStore> {
+    let session_store = MemoryStore::default();
+
+    SessionManagerLayer::new(session_store)
+        .with_secure(false)
+        .with_same_site(SameSite::Lax) // ensure we send the cookie from the OAuth redirect.
+        .with_expiry(tower_sessions::Expiry::OnSessionEnd)
 }

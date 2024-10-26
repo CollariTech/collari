@@ -5,24 +5,24 @@ use axum::Json;
 use axum_extra::either::Either;
 use serde::Serialize;
 
-pub type AutocondoResponse<T> = (StatusCode, Either<Json<T>, Json<AutocondoError>>);
+pub type CollariResponse<T> = (StatusCode, Either<T, Json<CollariError>>);
 
 #[derive(Debug, Serialize)]
-pub struct AutocondoError {
+pub struct CollariError {
     pub status: u16,
     pub message: String
 }
 
-pub fn ok<T: Serialize>(data: T) -> AutocondoResponse<T> {
-    (StatusCode::OK, Either::E1(Json(data)))
+pub fn ok<T>(data: T) -> CollariResponse<T> {
+    (StatusCode::OK, Either::E1(data))
 }
 
-pub fn no_content() -> AutocondoResponse<()> {
-    (StatusCode::NO_CONTENT, Either::E1(Json(())))
+pub fn no_content() -> CollariResponse<()> {
+    (StatusCode::NO_CONTENT, Either::E1(()))
 }
 
-pub fn error<T: Serialize>(status: StatusCode, message: &str) -> AutocondoResponse<T> {
-    (status, Either::E2(Json(AutocondoError {
+pub fn error<T: Serialize>(status: StatusCode, message: &str) -> CollariResponse<T> {
+    (status, Either::E2(Json(CollariError {
         status: status.as_u16(),
         message: String::from(message)
     })))

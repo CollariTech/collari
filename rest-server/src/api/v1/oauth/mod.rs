@@ -4,8 +4,10 @@ mod post;
 use axum::Router;
 use axum::routing::{get, post};
 
-pub const CSRF_STATE_KEY: &str = "oauth.csrf-state";
-pub const PKCE_VERIFIER_KEY: &str = "oauth.pkce-code";
+const CSRF_STATE_KEY: &str = "oauth.csrf-state";
+const PKCE_VERIFIER_KEY: &str = "oauth.pkce-code";
+pub const OAUTH_TOKEN_KEY: &str = "oauth.token";
+pub const OAUTH_METHOD_KEY: &str = "oauth.method";
 
 pub fn router() -> Router {
     Router::new()
