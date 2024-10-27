@@ -1,7 +1,0 @@
-services:
-  rest-server:
-    build:
-      ssh:
-        - default
-      context: .
-      dockerfile: ./rest-server/Dockerfile
