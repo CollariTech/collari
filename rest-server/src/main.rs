@@ -51,8 +51,8 @@ fn configure_oauth_provider() -> OAuthProvider {
     OAuthProvider::new(
         Provider::new(
             oauth::new_client(
-                std::env::var("GOOGLE_CLIENT_ID").expect(""),
-                std::env::var("GOOGLE_CLIENT_SECRET").expect(""),
+                std::env::var("GOOGLE_CLIENT_ID").expect("GOOGLE_CLIENT_ID not set"),
+                std::env::var("GOOGLE_CLIENT_SECRET").expect("GOOGLE_CLIENT_SECRET not set"),
                 "https://accounts.google.com/o/oauth2/v2/auth",
                 "https://www.googleapis.com/oauth2/v3/token",
                 "",
@@ -62,8 +62,8 @@ fn configure_oauth_provider() -> OAuthProvider {
         ),
         Provider::new(
             oauth::new_client(
-                std::env::var("FACEBOOK_CLIENT_ID").expect(""),
-                std::env::var("FACEBOOK_CLIENT_SECRET").expect(""),
+                std::env::var("FACEBOOK_CLIENT_ID").expect("FACEBOOK_CLIENT_ID not set"),
+                std::env::var("FACEBOOK_CLIENT_SECRET").expect("FACEBOOK_CLIENT_SECRET not set"),
                 "https://www.facebook.com/v20.0/dialog/oauth",
                 "https://graph.facebook.com/oauth/access_token",
                 "",
