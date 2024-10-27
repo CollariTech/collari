@@ -28,13 +28,6 @@ pub async fn main() {
         client
     };
 
-    let router = Router::new()
-        .nest("/api", api::router())
-        .layer(configure_cors())
-        .layer(Extension(configure_oauth_provider()))
-        .layer(configure_session())
-        .layer(Extension(state));
-
     let listener = tokio::net::TcpListener::bind(format!(
         "{}:{}",
         std::env::var("REST_SERVER_HOST").expect("REST_SERVER_HOST not set"),
@@ -42,7 +35,7 @@ pub async fn main() {
     ))
         .await
         .unwrap();
-    axum::serve(listener, router)
+    axum::serve(listener, api::router(state, configure_oauth_provider()))
         .await
         .expect("Failed to start axum server");
 }
@@ -74,24 +67,3 @@ fn configure_oauth_provider() -> OAuthProvider {
     )
 }
 
-fn configure_cors() -> tower_http::cors::CorsLayer {
-    tower_http::cors::CorsLayer::new()
-        .allow_credentials(true)
-        .allow_origin([])
-        .allow_headers([
-            header::CONTENT_TYPE
-        ])
-        .allow_methods([
-            Method::GET, Method::PUT,
-            Method::DELETE, Method::PATCH
-        ])
-}
-
-fn configure_session() -> SessionManagerLayer<MemoryStore> {
-    let session_store = MemoryStore::default();
-
-    SessionManagerLayer::new(session_store)
-        .with_secure(false)
-        .with_same_site(SameSite::Lax) // ensure we send the cookie from the OAuth redirect.
-        .with_expiry(tower_sessions::Expiry::OnSessionEnd)
-}
