@@ -1,6 +1,4 @@
 use crate::api::v1::oauth::{CSRF_STATE_KEY, OAUTH_METHOD_KEY, OAUTH_TOKEN_KEY, PKCE_VERIFIER_KEY};
-use crate::app::oauth::OAuthProvider;
-use crate::app::AppState;
 use crate::json::auth::{AuthzResp, UserInfo};
 use crate::json::{error, CollariResponse};
 use axum::extract::{Path, Query};
@@ -10,6 +8,8 @@ use gatekeeper::middleware::common::grpc::auth::OauthCreds;
 use oauth2::TokenResponse;
 use reqwest::StatusCode;
 use tower_sessions::Session;
+use crate::AppState;
+use crate::oauth::OAuthProvider;
 
 pub async fn callback(
     session: Session,
