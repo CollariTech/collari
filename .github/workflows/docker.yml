@@ -21,9 +21,5 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          ssh: |
-            default=${{ env.SSH_AUTH_SOCK }}
+      - name: Build rest-server
+        run: docker build --ssh default . -f rest-server/Dockerfile
