@@ -1,2 +1,7 @@
 [net]
 git-fetch-with-cli = true
+
+[net.ssh]
+known-hosts = [
+    "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOsjulgrqkrf3h/z4imF+ws3aDMH9CdWuarQOlaUPN3f"
+]
