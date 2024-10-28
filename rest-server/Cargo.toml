@@ -10,7 +10,7 @@ tokio = { workspace = true }
 serde = { workspace = true }
 log = { workspace = true }
 
-gatekeeper = { git = "ssh://git@github.com/CollariTech/gatekeeper.git", features = ["client", "middleware"] }
+gatekeeper = { git = "https://github.com/CollariTech/gatekeeper.git", features = ["client", "middleware"] }
 
 axum = { version = "0.7.7", default-features = false, features = ["http2", "tokio", "json", "query"] }
 tower-sessions = { version = "0.13.0", default-features = false, features = ["memory-store", "axum-core"] }
