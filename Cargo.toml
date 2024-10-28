@@ -2,6 +2,7 @@
 members = [
     "rest-server"
 ]
+resolver = "2"
 
 [workspace.package]
 edition = "2021"
