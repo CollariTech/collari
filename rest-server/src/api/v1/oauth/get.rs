@@ -1,23 +1,23 @@
 use crate::api::v1::oauth::{CSRF_STATE_KEY, OAUTH_METHOD_KEY, OAUTH_TOKEN_KEY, PKCE_VERIFIER_KEY};
 use crate::json::auth::{AuthzResp, UserInfo};
-use crate::json::{error, CollariResponse};
+use crate::json::{error, ok, CollariResponse};
+use crate::oauth::OAuthProvider;
+use crate::AppState;
 use axum::extract::{Path, Query};
-use axum::Extension;
+use axum::{Extension, Json};
 use gatekeeper::middleware::common::grpc::auth::credentials::Creds;
 use gatekeeper::middleware::common::grpc::auth::OauthCreds;
 use oauth2::TokenResponse;
 use reqwest::StatusCode;
 use tower_sessions::Session;
-use crate::AppState;
-use crate::oauth::OAuthProvider;
 
 pub async fn callback(
     session: Session,
     Path(oauth_method): Path<String>,
     Query(AuthzResp { code, state: new_state }): Query<AuthzResp>,
     Extension(providers): Extension<OAuthProvider>,
-    Extension(state): Extension<AppState>,
-) -> CollariResponse<()> {
+    Extension(mut state): Extension<AppState>,
+) -> CollariResponse<Json<crate::json::auth::TokenResponse>> {
     if let Ok(Some(old_state)) = session.remove::<String>(CSRF_STATE_KEY).await {
         if &old_state != new_state.secret() {
             return error(StatusCode::BAD_REQUEST, "state don't match");
@@ -46,15 +46,23 @@ pub async fn callback(
         name: user_info.name,
     };
 
-    let mut client = state.client.lock().await;
-
     // check if the user has an account
-    if client.login(Creds::Oauth(creds)).await.is_ok() {
-        todo!()
+    let user_token = state.client.auth_service.login(Creds::Oauth(creds)).await;
+
+    if let Ok(response) = user_token {
+        ok(
+            Json(crate::json::auth::TokenResponse {
+                token: Some(response.token),
+            })
+        )
     } else {
         session.insert(OAUTH_TOKEN_KEY, token).await.unwrap();
         session.insert(OAUTH_METHOD_KEY, oauth_method).await.unwrap();
 
-        todo!()
+        ok(
+            Json(crate::json::auth::TokenResponse {
+                token: None,
+            })
+        )
     }
 }

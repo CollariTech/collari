@@ -21,7 +21,7 @@ pub fn no_content() -> CollariResponse<()> {
     (StatusCode::NO_CONTENT, Either::E1(()))
 }
 
-pub fn error<T: Serialize>(status: StatusCode, message: &str) -> CollariResponse<T> {
+pub fn error<T>(status: StatusCode, message: &str) -> CollariResponse<T> {
     (status, Either::E2(Json(CollariError {
         status: status.as_u16(),
         message: String::from(message)

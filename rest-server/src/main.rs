@@ -1,11 +1,5 @@
-use std::sync::Arc;
-use axum::http::{header, Method};
-use axum::{Extension, Router};
-use gatekeeper::client::GatekeeperClient;
-use tokio::sync::Mutex;
-use tower_sessions::{MemoryStore, SessionManagerLayer};
-use tower_sessions::cookie::SameSite;
 use crate::oauth::{OAuthProvider, Provider};
+use gatekeeper::client::GatekeeperClient;
 
 mod oauth;
 mod api;
@@ -13,7 +7,7 @@ mod json;
 
 #[derive(Clone)]
 pub struct AppState {
-    pub client: Arc<Mutex<GatekeeperClient>>,
+    pub client: GatekeeperClient,
 }
 
 #[tokio::main]
@@ -21,11 +15,11 @@ pub async fn main() {
     dotenv::dotenv().ok();
     env_logger::init();
 
-    let client = Arc::new(Mutex::new(
-        GatekeeperClient::new("http://[::1]:10000".to_string())
-    ));
+    let connection = gatekeeper::client::connect("http://[::1]:10000")
+        .await
+        .expect("failed to connect to server");
     let state = AppState {
-        client
+        client: GatekeeperClient::new(connection)
     };
 
     let listener = tokio::net::TcpListener::bind(format!(

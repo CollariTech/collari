@@ -1,42 +1,40 @@
 use crate::api::v1::oauth::{OAUTH_METHOD_KEY, OAUTH_TOKEN_KEY};
-use crate::json::auth::{LoginCreds, SignUpCreds};
-use crate::json::{error, CollariResponse};
+use crate::json::auth::{LoginCreds, SignUpCreds, TokenResponse};
+use crate::json::{error, ok, CollariResponse};
+use crate::AppState;
 use axum::http::StatusCode;
 use axum::{Extension, Json};
 use axum_garde::WithValidation;
 use gatekeeper::middleware::common::grpc::auth::credentials::Creds;
 use gatekeeper::middleware::common::grpc::auth::{OauthCreds, PasswordCreds};
 use tower_sessions::Session;
-use crate::AppState;
 
 pub async fn login(
-    Extension(state): Extension<AppState>,
+    Extension(mut state): Extension<AppState>,
     WithValidation(payload): WithValidation<Json<LoginCreds>>,
-) -> CollariResponse<()> {
+) -> CollariResponse<Json<TokenResponse>> {
     let payload = payload.into_inner();
     let creds = PasswordCreds {
         email: payload.email,
-        name: "".to_string(),
+        name: None,
         password: payload.password,
     };
-
-    let mut client = state.client.lock().await;
-    client.login(Creds::Password(creds)).await.unwrap();
-
-    todo!()
+    
+    match state.client.auth_service.login(Creds::Password(creds)).await {
+        Ok(auth) => ok(Json(TokenResponse { token: Some(auth.token) })),
+        Err(_) => error(StatusCode::UNAUTHORIZED, "invalid credentials"),
+    }
 }
 
 pub async fn signup(
     session: Session,
-    Extension(state): Extension<AppState>,
+    Extension(mut state): Extension<AppState>,
     WithValidation(payload): WithValidation<Json<SignUpCreds>>,
-) -> CollariResponse<()> {
+) -> CollariResponse<Json<TokenResponse>> {
     let payload = payload.into_inner();
 
     let oauth_token = session.remove::<String>(OAUTH_TOKEN_KEY).await;
     let oauth_method = session.remove::<String>(OAUTH_METHOD_KEY).await;
-
-    let mut client = state.client.lock().await;
 
     let creds = if let (Ok(Some(oauth_token)), Ok(Some(oauth_method))) = (oauth_token, oauth_method) {
         let creds = OauthCreds {
@@ -51,7 +49,7 @@ pub async fn signup(
         if let Some(password) = payload.password {
             let creds = PasswordCreds {
                 email: payload.email,
-                name: payload.name,
+                name: Some(payload.name),
                 password,
             };
 
@@ -61,7 +59,14 @@ pub async fn signup(
         }
     };
 
-    client.signup(creds).await.unwrap();
+    let user_token = match state.client.auth_service.signup(creds).await {
+        Ok(response) => response.token,
+        Err(_) => return error(StatusCode::BAD_REQUEST, "user already exists"),
+    };
 
-    todo!()
+    ok(
+        Json(TokenResponse {
+            token: Some(user_token),
+        })
+    )
 }

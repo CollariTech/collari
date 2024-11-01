@@ -1,5 +1,6 @@
 use axum::http::{header, Method};
 use axum::{Extension, Router};
+use gatekeeper::middleware::AuthenticationLayer;
 use tower_sessions::{MemoryStore, SessionManagerLayer};
 use tower_sessions::cookie::SameSite;
 use crate::AppState;
@@ -15,10 +16,11 @@ pub fn router(
         .layer(configure_cors())
         .layer(Extension(oauth_provider))
         .layer(configure_session())
-        .layer(Extension(state))
         .nest("/api", Router::new()
             .nest("/v1", v1::router())
         )
+        .layer(AuthenticationLayer::new(state.client.auth_service.clone()))
+        .layer(Extension(state))
 }
 
 fn configure_cors() -> tower_http::cors::CorsLayer {
