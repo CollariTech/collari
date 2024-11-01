@@ -1,0 +1,73 @@
+/* hero.css */
+@import url('https://fonts.googleapis.com/css2?family=Manjari:wght@300;400;500;600&display=swap');
+
+body {
+  font-family: 'Manjari', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start; /* flex-start pra alinhar na esquerda */
+  height: 100vh; /* tela inteira */
+  text-align: left; /* text align pra esquerda */
+  padding: 20px;
+  background: url('/video22.mp4 ') no-repeat center center; /* video */
+  background-size: cover; /* cover */
+  color: #f9f9f9; /* Texto claro */
+}
+
+
+.hero video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  transform: translate(-50%, -50%) scaleX(-1); /* o video ta ivnertido */
+}
+
+.hero-title {
+  font-size: 6.3rem; /* destacando o texto */
+  font-weight: 600; /* grosso */
+  margin: 10px 0;
+}
+
+.hero-subtitle {
+  font-size: 2.9rem;
+  margin: 20px 0;
+  color: #f9f9f9; /* o texto fica claro (eu quero mudar isso no futuro) */
+}
+
+.hero-btn {
+  /* tema de cores q o gabriel mandou e eu segui pra ver como ficava :p */
+  padding: 0.75rem 1.5rem;
+  background-color: #ff5200; /* cor primaria */
+  color: #ffffff; /* textob ranco */
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #dc527e; /* cor secundaria assim q vc der hover */
+}
+
+/* RESPONSIVIDADE MOBILE KEKW */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem; /* telas peuquenas (tem q testar) */
+  }
+  .hero-subtitle {
+    font-size: 1.2rem; /* telas peuquenas (tem q testar) */
+  }
+}

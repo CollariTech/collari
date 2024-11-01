@@ -1,31 +1,26 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import '../styles/hero.css';
 ---
 
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Lorem Ipsum</title>
-    <link rel="stylesheet" href="/src/styles/global.css">
-  </head>
-  <body>
-    <Header />
-    <main>
-      <section id="home" class="section" data-aos="fade-up">
-        <h1>collari.</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tellus diam, viverra ac efficitur sit amet</p>
-      </section>
-      <section id="about" class="section" data-aos="fade-right">
-        <h2>Sobre Nós</h2>
-        <p>Praesent viverra ac sapien vel laoreet. Proin convallis sem nisl, id sagittis arcu facilisis lobortis.</p>
-      </section>
-      <section id="services" class="section" data-aos="fade-left">
-        <h2>Serviços</h2>
-        <p>Donec egestas magna eget erat convallis, et interdum justo aliquam. </p>
-      </section>
-    </main>
-    <Footer />
-    <script src="/src/scripts/initAOS.js" type="module" defer></script>
-  </body>
+<head>
+  <title>Collari</title>
+  <meta name="description" content="Resolvemos problemas com uma equipe premiada e inovadora. Junte-se a nós.">
+  <meta charset="UTF-8">
+</head>
+<body>
+
+
+<section class="hero">
+  <video autoplay muted loop>
+    <source src="/video22.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos.
+  </video>
+
+<Hero />
+<About />
+
+</body>
 </html>
