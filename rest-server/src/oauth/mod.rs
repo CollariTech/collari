@@ -15,30 +15,13 @@ pub struct Provider {
 }
 
 impl OAuthProvider {
-    pub fn new() -> Self {
+    pub fn new(
+        google: Provider,
+        facebook: Provider,
+    ) -> Self {
         Self {
-            google: Provider::new(
-                oauth_client(
-                    std::env::var("GOOGLE_CLIENT_ID").expect(""),
-                    std::env::var("GOOGLE_CLIENT_SECRET").expect(""),
-                    "https://accounts.google.com/o/oauth2/v2/auth",
-                    "https://www.googleapis.com/oauth2/v3/token",
-                    "",
-                ),
-                "https://www.googleapis.com/oauth2/v3/userinfo".to_string(),
-                vec!["email", "profile"],
-            ),
-            facebook: Provider::new(
-                oauth_client(
-                    std::env::var("FACEBOOK_CLIENT_ID").expect(""),
-                    std::env::var("FACEBOOK_CLIENT_SECRET").expect(""),
-                    "https://www.facebook.com/v20.0/dialog/oauth",
-                    "https://graph.facebook.com/oauth/access_token",
-                    "",
-                ),
-                "https://graph.facebook.com/me?fields=name,email".to_string(),
-                vec!["email"],
-            ),
+            google,
+            facebook,
         }
     }
 
@@ -62,7 +45,6 @@ impl Provider {
 
     pub fn auth_url(&self) -> ((oauth2::url::Url, oauth2::CsrfToken), oauth2::PkceCodeVerifier) {
         let (pkce_code_challenge, pkce_code_verifier) = oauth2::PkceCodeChallenge::new_random_sha256();
-
         (
             self.client
                 .authorize_url(oauth2::CsrfToken::new_random)
@@ -103,7 +85,7 @@ impl Provider {
     }
 }
 
-fn oauth_client(
+pub fn new_client(
     client_id: String,
     client_secret: String,
     auth_url: &str,

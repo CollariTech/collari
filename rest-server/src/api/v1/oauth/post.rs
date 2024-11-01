@@ -1,10 +1,10 @@
 use crate::api::v1::oauth::{CSRF_STATE_KEY, PKCE_VERIFIER_KEY};
-use crate::app::oauth::OAuthProvider;
 use crate::json::{ok, CollariResponse};
 use axum::extract::Path;
 use axum::response::{IntoResponse, Redirect};
 use axum::Extension;
 use tower_sessions::Session;
+use crate::oauth::OAuthProvider;
 
 pub async fn oauth(
     session: Session,

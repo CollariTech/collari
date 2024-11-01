@@ -1,5 +1,4 @@
 use crate::api::v1::oauth::{OAUTH_METHOD_KEY, OAUTH_TOKEN_KEY};
-use crate::app::AppState;
 use crate::json::auth::{LoginCreds, SignUpCreds};
 use crate::json::{error, CollariResponse};
 use axum::http::StatusCode;
@@ -8,6 +7,7 @@ use axum_garde::WithValidation;
 use gatekeeper::middleware::common::grpc::auth::credentials::Creds;
 use gatekeeper::middleware::common::grpc::auth::{OauthCreds, PasswordCreds};
 use tower_sessions::Session;
+use crate::AppState;
 
 pub async fn login(
     Extension(state): Extension<AppState>,
