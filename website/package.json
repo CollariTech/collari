@@ -1,17 +1,18 @@
 {
-  "name": "collari",
+  "name": "collaritech",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "dev": "collari dev",
+    "start": "collari",
+    "build": "collari build",
+    "preview": "collari preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/svelte": "^5.7.2",
-    "aos": "^2.3.4",
-    "astro": "^4.16.7"
+    "@astrojs/tailwind": "^5.1.2",
+    "astro": "^4.16.7",
+    "tailwindcss": "^3.4.14"
   }
 }

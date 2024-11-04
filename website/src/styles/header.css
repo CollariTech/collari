@@ -1,0 +1,56 @@
+.header {
+  width: 100%;
+  height: auto;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.logo {
+  width: 100px;
+  height: 80px;
+  position: relative;
+}
+
+.nav-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+}
+
+.nav-link {
+  padding: 20px 25px;
+  background: transparent;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.nav-text {
+  color: white;
+  font-size: 24px;
+  font-family: Hellix, sans-serif;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.cta-button {
+  width: 160px;
+  height: 48px;
+  border-radius: 24px;
+  border: 2px solid #D3D0D0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}

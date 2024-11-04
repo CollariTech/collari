@@ -1,14 +1,28 @@
 ---
-// Aqui você pode definir props se precisar
+import '../styles/header.css';
 ---
 
-<header>
-  <nav>
-    <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">Sobre nós</a></li>
-      <li><a href="#services">Serviços</a></li>
-      <li><a href="#contact">Contato</a></li>
-    </ul>
-  </nav>
+<header class="header">
+  <div class="header-container">
+    <div class="logo">
+      <img src="/logo.png" alt="Logo" class="w-full h-full" />
+    </div>
+
+    <nav class="nav-menu">
+      <a href="/" class="nav-link">
+        <span class="nav-text">Home</span>
+      </a>
+      <a href="/about" class="nav-link">
+        <span class="nav-text">About</span>
+      </a>
+      <a href="/services" class="nav-link">
+        <span class="nav-text">Services</span>
+      </a>
+      <a href="/contact" class="nav-link">
+        <span class="nav-text">Contact</span>
+      </a>
+    </nav>
+
+    <div class="cta-button"></div>
+  </div>
 </header>

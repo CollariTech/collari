@@ -1,26 +1,11 @@
 ---
-import Hero from '../components/Hero.astro';
+import Layout from '../layouts/Layout.astro';
 import About from '../components/About.astro';
-import '../styles/hero.css';
+import '../styles/index.css';
 ---
 
-<html lang="pt-br">
-<head>
-  <title>Collari</title>
-  <meta name="description" content="Resolvemos problemas com uma equipe premiada e inovadora. Junte-se a nós.">
-  <meta charset="UTF-8">
-</head>
-<body>
-
-
-<section class="hero">
-  <video autoplay muted loop>
-    <source src="/video22.mp4" type="video/mp4">
-    Seu navegador não suporta vídeos.
-  </video>
-
-<Hero />
-<About />
-
-</body>
-</html>
+<Layout>
+  <div class="content-wrapper">
+    <About />
+  </div>
+</Layout>

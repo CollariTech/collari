@@ -1,0 +1,11 @@
+:root {
+  --primary-dark: #130A2A;
+  --primary-darker: #0C0223;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--primary-darker);
+  font-family: 'Hellix', sans-serif;
+}

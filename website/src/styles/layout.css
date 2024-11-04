@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--primary-darker);
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--primary-darker);
+}
+
+.main-content {
+  flex: 1;
+  min-height: calc(100vh - 140px);
+  padding-top: 90px;
+  margin-bottom: 0;
+}
+
+.footer-section {
+   background: var(--primary-darker);
+   width: 100%;
+ }
