@@ -3,10 +3,10 @@
   "type": "module",
   "version": "0.0.5",
   "scripts": {
-    "dev": "collari dev",
-    "start": "collari",
-    "build": "collari build",
-    "preview": "collari preview",
+    "dev": "astro dev",
+    "start": "astro",
+    "build": "astro build",
+    "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
